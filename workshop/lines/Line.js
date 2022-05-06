@@ -1,6 +1,6 @@
 class Line {
-  constructor() {
-    this.shuffle();
+  constructor(start, vel) {
+    if(start && vel) this.set(start, vel);
   }
 
   shuffle() {
@@ -13,7 +13,20 @@ class Line {
     let end = getRandomPointOnSide(s);
     this.vel = p5.Vector.sub(end, this.start).normalize().mult(speed);
 
+    this.init();
+
+  }
+
+  set(start, vel) {
+    this.start = start;
+    this.vel = vel;
+    this.init();
+  }
+
+  init() {
     this.current = this.start.copy();
+
+    // Set stage
     this.play = false;
     this.show = true;
 
@@ -21,17 +34,11 @@ class Line {
     this.graphic = createGraphics(width, height);
   }
 
-  set(start, vel) {
-    this.start = start;
-    this.vel = vel;
-  }
-
   set_speed(_speed) {
     this.vel.normalize().mult(_speed)
   }
 
   run() {
-    //console.log("RUN");
     this.update();
     this.display();
   }
@@ -49,7 +56,7 @@ class Line {
       this.graphic.stroke(0);
       this.graphic.strokeWeight(3);
       this.graphic.line(this.start.x, this.start.y, this.current.x, this.current.y);
-      if (this.go) console.log(this.start, this.current);
+      //console.log(this.start, this.current);
       // Draw buffer to canvas
 
     } else {

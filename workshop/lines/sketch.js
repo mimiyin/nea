@@ -4,10 +4,10 @@ const NUM_LINES = 5;
 
 // Toggle sets
 const TOGGLE_SETS = [
-  ['1', '2', '3', '4', '5'],
-  ['q', 'w', 'e', 'r', 't'],
-  ['a', 's', 'd', 'f', 'g'],
-  ['z', 'x', 'c', 'v', 'b']
+  ['0', '1', '2', '3', '4', '5'],
+  ['p', 'q', 'w', 'e', 'r', 't'],
+  ['l', 'a', 's', 'd', 'f', 'g'],
+  ['m', 'z', 'x', 'c', 'v', 'b']
 ]
 // Set indices
 const PLAY_PAUSE = 0;
@@ -20,6 +20,7 @@ let speed = 2;
 let lines = [];
 
 // Manually setting lines
+let manual = false;
 let m_start, m_vel;
 
 // Global settings
@@ -41,9 +42,16 @@ function draw() {
 }
 
 function init() {
-  for (let l = 0; l < NUM_LINES; l++) {
+  for (let l = 1; l < NUM_LINES + 1; l++) {
     lines[l] = new Line();
+    lines[l].shuffle();
   }
+
+  // Set manual line
+  m_start = createVector(width / 4, height);
+  m_vel = createVector(1, -1.5).normalize().mult(0.1);
+  lines[0] = new Line(m_start, m_vel);
+  //console.log(lines[0]);
 }
 
 function keyPressed() {
@@ -59,6 +67,9 @@ function keyPressed() {
       break;
     }
   }
+
+  console.log('num', num);
+
   // Try the numbers
   if (num >= 0) {
     switch (mode) {
@@ -98,6 +109,9 @@ function keyPressed() {
       play = !play;
       for (let line of lines) line.toggle_play(play);
       break;
+    case SHIFT:
+      manual = !manual;
+      break;
     case UP_ARROW:
       speed--;
       break;
@@ -118,6 +132,7 @@ function keyPressed() {
 }
 
 function mousePressed() {
+  if (!manual) return;
   let dists = [mouseX, width - mouseX, mouseY, height - mouseY];
   let min = Math.min(...dists);
   let s = dists.indexOf(min);
@@ -125,6 +140,9 @@ function mousePressed() {
 }
 
 function mouseReleased() {
+  if (!manual) return;
   let target = createVector(mouseX, mouseY);
   m_vel = p5.Vector.sub(target, m_start);
+  // Set the manual line
+  lines[0].set(m_start, m_vel);
 }
