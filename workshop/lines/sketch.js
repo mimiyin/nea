@@ -16,7 +16,7 @@ const INIT = 2;
 const SPEED = 3;
 
 // Lines
-let speed = 0.1;
+let speed = 2;
 let lines = [];
 
 // Manually setting lines
@@ -82,13 +82,15 @@ function keyPressed() {
     return;
   }
 
+  console.log(keyCode);
+
   switch (keyCode) {
     case 32:
       go = !go;
       break;
     case 'm':
       manual = !manual;
-    case DELETE:
+    case BACKSPACE:
       show = !show;
       for (let line of lines) line.toggle_show(show);
       break;
