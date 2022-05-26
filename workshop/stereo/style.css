@@ -1,0 +1,30 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+canvas {
+  display: block;
+}
+
+input {
+  position: absolute;
+  width: 50px;
+}
+
+input[type="range"] {
+  position: absolute;
+  top: 100px;
+  left: 650px;
+  appearance: none;
+  width: 250px;
+  height: 1px;
+  background: black;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: black;
+  cursor: pointer;
+}
