@@ -9,6 +9,7 @@ let bg = high;
 let m = 120;
 let limit;
 let anchor;
+let go = true;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -54,5 +55,14 @@ function draw() {
 }
 
 function keyPressed() {
-  if(keyCode == 32) reset();
+  switch(keyCode) {
+    case ENTER:
+      reset();
+      break;
+    case 32:
+      go = !go;
+      if(go) loop();
+      else noLoop();
+      break;
+  }
 }
