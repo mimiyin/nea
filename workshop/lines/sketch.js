@@ -26,6 +26,7 @@ let m_start, m_vel;
 // Global settings
 let show = true;
 let play = true;
+let debug = true;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -37,8 +38,11 @@ function draw() {
   for (let line of lines) {
     line.run();
   }
-  textSize(16);
-  text(nfs(speed, 0, 1), 10, 30);
+  if(debug) {
+    textAlign(RIGHT, BOTTOM);
+    fill(255, 0, 0);
+    text(nfs("Speed: "+ speed, 0, 1), width, height);
+  }
 }
 
 function init() {
@@ -86,7 +90,7 @@ function keyPressed() {
         lines[num].shuffle();
         break;
       case SPEED:
-        console.log("SPEED", num);
+        console.log("SPEED", num, speed);
         lines[num].set_speed(speed);
         break;
     }
@@ -97,10 +101,11 @@ function keyPressed() {
 
   switch (keyCode) {
     case 32:
-      go = !go;
+      debug = !debug;
       break;
     case 'm':
       manual = !manual;
+      break;
     case BACKSPACE:
       show = !show;
       for (let line of lines) line.toggle_show(show);

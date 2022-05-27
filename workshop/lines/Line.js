@@ -69,7 +69,6 @@ class Line {
 
   toggle_show(show) {
     this.show = show || !this.show;
-    this.play = this.show;
     console.log("SHOW", this.show);
   }
 
