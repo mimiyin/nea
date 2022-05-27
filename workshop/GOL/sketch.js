@@ -50,7 +50,7 @@ function setup() {
 
 function draw() {
   // background(255);
-
+  push();
   translate(-w, -h);
 
   if (frameCount % generateInverval == 0) {
@@ -103,12 +103,12 @@ function draw() {
   }
   fadeIn += 1 * (600 / generateInverval);
   fadeOut -= 1 * (600 / generateInverval);
-
+  pop();
   if (displayed) {
     fill(255, 0, 0);
-    textSize(height/75);
+    textSize(height / 75);
     textAlign(RIGHT, BOTTOM);
-    text("auto:" + autoState + "    speed:" + generateInverval + "   density:" + density,  width, height);
+    text("auto:" + autoState + "    speed:" + generateInverval + "   density:" + density, width, height);
     // text("speed:" + generateInverval, w, height + h);
     // text("   density:" + density, w, height + h);
     // text("auto:" + autoState,  w, height + h);
@@ -203,9 +203,13 @@ function keyPressed() {
   } else if (key == " ") {
     init();
   } else if (key == "a") {
-    autoState = !autoState;
+    autoState = true;
+  } else if (key == "s") {
+    autoState = false;
   } else if (key == "d") {
-    displayed = !displayed;
+    displayed = true;
+  } else if (key == "f") {
+    displayed = false;
   }
 
   generateInverval = constrain(generateInverval, 60, 900);

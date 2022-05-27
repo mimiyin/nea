@@ -44,7 +44,7 @@ function draw() {
 
   if (autoState) {
     // if on automation
-    timeTillChange = frameCountatStart + rate - frameCount;
+    interval = frameCountatStart + rate - frameCount;
     if (state) {
       rect(width / 2, height / 2, w, h);
     }
@@ -59,7 +59,7 @@ function draw() {
     if (frameCount % rate == 0) {
       toggle();
     }
-    timeTillChange = rate - (frameCount % rate);
+    interval = rate - (frameCount % rate);
   }
 
   if (displayed) {
@@ -84,14 +84,10 @@ function draw() {
 
     textAlign(RIGHT, BOTTOM);
     text(
-      "[a]utomation: " + autoState + "    time till change: " + timeTillChange,
+      "[a]utomation: " + autoState + "    interval: " + interval,
       width, height
     );
   }
-}
-
-function displayDebug() {
-  displayed = !displayed;
 }
 
 function toggle() {
@@ -100,10 +96,8 @@ function toggle() {
 
 function keyPressed() {
   if (key == "a") {
-    autoState = !autoState;
-    if (autoState) {
-      autoDrive();
-    }
+    autoState = true;
+    autoDrive();
   } else {
     autoState = false;
   }
@@ -172,7 +166,10 @@ function keyPressed() {
     pause = true;
     playPauseSketch();
   } else if (key == "d") {
-    displayDebug();
+    displayed = true;
+  }
+  else if(key == "f") {
+    displayed = false;
   }
 }
 

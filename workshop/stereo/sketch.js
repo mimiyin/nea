@@ -6,10 +6,13 @@ const SLIDER_XR = SLIDER_XL + SLIDER_W;
 const SLIDER_Y = 100;
 const INPUT_M = 200;
 let panner;
-let ths = [0.1, 0.5];
+let ths = [0.1, 0.5, 1];
 let thumbs = [];
+let paces = ["Fast", "Medium", "Slow"];
+let pace;
 let side;
 let click;
+
 
 // Set tempo ranges
 let tempos = [
@@ -90,12 +93,16 @@ function draw() {
 
       // Pick a new threshold
       let r = random(1);
-      for(let t in ths) {
-        let th = ths[t];
+      delay = undefined;
+      for(let t in thumbs) {
+        let thumb = thumbs[t];
+        let th = thumb.getThreshold();
         if(r < th) {
           let low = tempos[t][0];
           let high = tempos[t][1];
           delay = random(low, high);
+          pace = t;
+          console.log(pace, low, high, delay);
           break;
         }
       }
@@ -105,7 +112,7 @@ function draw() {
   textAlign(LEFT, CENTER);
   textSize(16);
   text("Pan TH: " + nfs(panner.value(), 0, 2), 650, 185);
-  text("Delay: " + nfs(delay/1000, 0, 2) + "\tTS: " + nfs(ts/1000, 0, 2) + "\tNow: " + floor(millis()/1000), 100, 300);
+  text("Pace: " + paces[pace] + "\tDelay: " + floor(delay/1000) + "\tCount: " + floor((floor(millis()/1000) - ts/1000)), 100, 300);
   textSize(36);
   text(side, 650, 300);
 }

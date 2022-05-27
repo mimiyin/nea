@@ -1,13 +1,15 @@
-let r = 0.05;
+let r = 1;
 let sx, sy, ex, ey;
 let sxspeed, syspeed, exspeed, eyspeed;
 let t = {};
+let debug = true;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   init();
   stroke(255);
   strokeWeight(5);
+  noCursor();
 }
 
 function draw() {
@@ -17,6 +19,15 @@ function draw() {
   ex += exspeed;
   ey += eyspeed;
   line(sx, sy, ex, ey);
+
+  if (debug) {
+    push();
+    textAlign(RIGHT, BOTTOM);
+    fill('red');
+    noStroke();
+    text('r: ' + nfs(r, 0, 2), width, height);
+    pop();
+  }
 }
 
 function init(side) {
@@ -64,20 +75,61 @@ function init(side) {
   }
 }
 
-function mousePressed() {
-  t.start = millis();
-}
+// function mousePressed() {
+//   t.start = millis();
+// }
+//
+// function mouseClicked() {
+//   t.end = millis();
+//   t.time = t.end - t.start;
+//   r = map(t.time, 0, 5000, 5, 0);
+//   r = constrain(r, 0.001, 5);
+//
+//   // Left, Right, Top, Down
+//   let sides = [mouseX, width - mouseX, mouseY, height - mouseY];
+//   let side = sides.indexOf(min(sides));
+//
+//   init(side);
+//   print("TIME:", floor(t.time));
+// }
 
-function mouseClicked() {
-  t.end = millis();
-  t.time = t.end - t.start;
-  r = map(t.time, 0, 5000, 5, 0 );
-  r = constrain(r, 0.001, 5);
-
-  // Left, Right, Top, Down
-  let sides = [ mouseX, width - mouseX, mouseY, height-mouseY];
-  let side = sides.indexOf(min(sides));
-
-  init(side);
-  print("TIME:", floor(t.time));
+// Randomly choose a side
+function keyPressed() {
+  switch (key) {
+    case '1':
+      init(2);
+      break;
+    case '2':
+      init(1);
+      break;
+    case '3':
+      init(3);
+      break;
+    case '4':
+      init(0);
+      break;
+    case 'd':
+      debug = true;
+      break;
+    case 'f':
+      debug = false;
+      break;
+  }
+  switch (keyCode) {
+    case ENTER:
+      init(floor(random(4)));
+      break;
+    case RIGHT_ARROW:
+      r += 0.05;
+      break;
+    case RIGHT_ARROW:
+      r -= 0.05;
+      break;
+    case UP_ARROW:
+      r -= 0.1;
+      break;
+    case DOWN_ARROW:
+      r += 0.1;
+      break;
+  }
 }
