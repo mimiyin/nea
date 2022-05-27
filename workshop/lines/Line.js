@@ -1,6 +1,9 @@
 class Line {
   constructor(start, vel) {
-    if(start && vel) this.set(start, vel);
+    if (start && vel) {
+      this.set(start, vel);
+      this.wrap = true;
+    }
   }
 
   shuffle() {
@@ -28,7 +31,6 @@ class Line {
 
     // Set stage
     this.play = false;
-    this.show = true;
 
     // Initialize graphics buffer
     this.graphic = createGraphics(width, height);
@@ -44,7 +46,13 @@ class Line {
   }
 
   update() {
-    if (offScreen(this.current)) this.play = false;
+    if (offScreen(this.current)) {
+      if(this.wrap) {
+        this.init();
+        this.play = true;
+      }
+      else this.play = false;
+    }
     if (this.play) {
       this.current.add(this.vel);
       //console.log("UPDATE", this.current.x, this.current.y);
@@ -52,18 +60,11 @@ class Line {
   }
 
   display() {
-    if (this.show) {
-      this.graphic.stroke(0);
-      this.graphic.strokeWeight(3);
-      this.graphic.line(this.start.x, this.start.y, this.current.x, this.current.y);
-      //console.log(this.start, this.current);
-      // Draw buffer to canvas
-
-    } else {
-      console.log("CLEARING");
-      this.graphic.clear();
-
-    }
+    this.graphic.stroke(0);
+    this.graphic.strokeWeight(3);
+    this.graphic.line(this.start.x, this.start.y, this.current.x, this.current.y);
+    //console.log(this.start, this.current);
+    // Draw buffer to canvas
     image(this.graphic, 0, 0);
   }
 

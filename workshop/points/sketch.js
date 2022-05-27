@@ -20,6 +20,7 @@ function draw() {
   rect(x, y, SZ, SZ);
   if (debug) {
     fill(255, 0, 0);
+    textSize(24);
     textAlign(RIGHT, BOTTOM)
     text("Interval: " + nfs(rinterval, 0, 2), width, height);
   }

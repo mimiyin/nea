@@ -29,6 +29,7 @@ function draw() {
     line.run();
   }
   if (debug) {
+    textSize(24);
     textAlign(RIGHT, BOTTOM);
     fill(255, 0, 0);
     text(nfs("Speed: " + speed, 0, 1), width, height);
