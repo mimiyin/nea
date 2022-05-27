@@ -1,6 +1,6 @@
 // KEYS
 // SPACE = PAUSE SKETCH
-// D = DISPLAY DEBUG INFO
+// D = debug DEBUG INFO
 // 1,2,3,4 = PRESET RATES
 // UP, DOWN = JUMP PRESETS
 // LEFT, RIGHT = +/- 30 FRAMES
@@ -10,7 +10,7 @@
 
 
 let state = true;
-let autoState = false;
+let auto = false;
 let num = 5; // division for square
 let seedWeights = [0, 15, 20, 30, 20, 15]; // base 100
 let weights = [];
@@ -19,7 +19,7 @@ let rates = [20, 60, 120, 300, 600]; // frames;
 let rate = rates[2];
 let jumpValue = 30;
 let pause = false;
-let displayed = false;
+let debug = false;
 
 function setup() {
   tWeight = 0;
@@ -42,7 +42,7 @@ function draw() {
   fill(255);
   background(0);
 
-  if (autoState) {
+  if (auto) {
     // if on automation
     interval = frameCountatStart + rate - frameCount;
     if (state) {
@@ -62,7 +62,7 @@ function draw() {
     interval = rate - (frameCount % rate);
   }
 
-  if (displayed) {
+  if (debug) {
     // draw debug line
     stroke(255);
     strokeWeight(3);
@@ -84,7 +84,7 @@ function draw() {
 
     textAlign(RIGHT, BOTTOM);
     text(
-      "[a]utomation: " + autoState + "    interval: " + interval,
+      "automate: " + auto + "    interval: " + interval,
       width, height
     );
   }
@@ -95,11 +95,15 @@ function toggle() {
 }
 
 function keyPressed() {
-  if (key == "a") {
-    autoState = true;
-    autoDrive();
-  } else {
-    autoState = false;
+  switch(keyCode) {
+    case SHIFT:
+      debug = !debug;
+      break;
+    case ENTER:
+      auto = !auto;
+      break;
+    case 32:
+      pause = !pause;
   }
 
   if (key == "1") {
@@ -165,11 +169,6 @@ function keyPressed() {
     state = !state;
     pause = true;
     playPauseSketch();
-  } else if (key == "d") {
-    displayed = true;
-  }
-  else if(key == "f") {
-    displayed = false;
   }
 }
 

@@ -34,6 +34,5 @@ function init() {
 
 function keyPressed() {
   if(keyCode == 32) init();
-  if(key == 'd') debug = true;
-  if(key == 'f') debug = false;
+  if(keyCode == SHIFT) debug = !debug;
 }

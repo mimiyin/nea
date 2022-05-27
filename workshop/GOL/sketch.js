@@ -7,7 +7,7 @@
 // A = AUTO VS. MANUAL (AUTO MEANS WEIGHTED RANDOM)
 
 let w, h, columns, rows, board, pboard, next;
-let autoState = true;
+let auto = true;
 let fadeIn = 0;
 let fadeOut = 255;
 let generateInverval = 300;
@@ -18,7 +18,7 @@ let di = 2; // CHANGE STARTING DENSITY HERE
 let density = densities[di];
 let num = 5;
 let whiteSquareCount;
-let displayed = false;
+let debug = false;
 
 function setup() {
   tWeight = 0;
@@ -84,7 +84,7 @@ function draw() {
         rect(i * w, j * h, w, h);
       }
     }
-    if (autoState && changeCount == 0) {
+    if (auto && changeCount == 0) {
       autoDrive();
     }
   } else {
@@ -104,14 +104,14 @@ function draw() {
   fadeIn += 1 * (600 / generateInverval);
   fadeOut -= 1 * (600 / generateInverval);
   pop();
-  if (displayed) {
+  if (debug) {
     fill(255, 0, 0);
     textSize(height / 75);
     textAlign(RIGHT, BOTTOM);
-    text("auto:" + autoState + "    speed:" + generateInverval + "   density:" + density, width, height);
+    text("auto:" + auto + "    speed:" + generateInverval + "   density:" + density, width, height);
     // text("speed:" + generateInverval, w, height + h);
     // text("   density:" + density, w, height + h);
-    // text("auto:" + autoState,  w, height + h);
+    // text("auto:" + auto,  w, height + h);
     // text("speed:" + generateInverval, w, height + h);
     // text("density:" + density, w, height + h);
   }
@@ -200,17 +200,22 @@ function keyPressed() {
       di++;
     }
     density = densities[di];
-  } else if (key == " ") {
-    init();
-  } else if (key == "a") {
-    autoState = true;
-  } else if (key == "s") {
-    autoState = false;
-  } else if (key == "d") {
-    displayed = true;
-  } else if (key == "f") {
-    displayed = false;
   }
+
+  switch (keyCode) {
+    case 32:
+      init();
+      break;
+    case SHIFT:
+      debug = !debug;
+      break;
+    case ENTER:
+      auto = !auto;
+      break;
+  }
+
+  // Turn off auto if trying to do anything else
+  if(keyCode != ENTER) auto = false;
 
   generateInverval = constrain(generateInverval, 60, 900);
   // density = constrain(density, 0, 1);

@@ -108,12 +108,6 @@ function keyPressed() {
     case '4':
       init(0);
       break;
-    case 'd':
-      debug = true;
-      break;
-    case 'f':
-      debug = false;
-      break;
   }
   switch (keyCode) {
     case ENTER:
@@ -130,6 +124,9 @@ function keyPressed() {
       break;
     case DOWN_ARROW:
       r += 0.1;
+      break;
+    case SHIFT:
+      debug = !debug;
       break;
   }
 }
