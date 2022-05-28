@@ -1,9 +1,7 @@
 class Line {
   constructor(start, vel) {
-    if (start && vel) {
-      this.set(start, vel);
-      this.wrap = true;
-    }
+    if(start && vel) this.set(start, vel);
+    else this.shuffle();
   }
 
   shuffle() {
@@ -47,11 +45,10 @@ class Line {
 
   update() {
     if (offScreen(this.current)) {
-      if(this.wrap) {
+      if (auto) {
         this.init();
         this.play = true;
-      }
-      else this.play = false;
+      } else this.play = false;
     }
     if (this.play) {
       this.current.add(this.vel);

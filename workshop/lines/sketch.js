@@ -8,12 +8,15 @@ const TOGGLES = ['0', '1', '2', '3', '4', '5'];
 const PLAY_PAUSE = 0;
 
 // Lines
-let speed = 0.2;
+let speed = 2;
 let lines = [];
 
 // Manually setting lines
 let manual = false;
 let m_start, m_vel;
+
+// Auto-wrap
+let auto = true;
 
 // Global settings
 let debug = true;
@@ -32,14 +35,13 @@ function draw() {
     textSize(24);
     textAlign(RIGHT, BOTTOM);
     fill(255, 0, 0);
-    text(nfs("Speed: " + speed, 0, 1), width, height);
+    text(nfs("auto: " + auto + "\speed: " + speed, 0, 1), width, height);
   }
 }
 
 function init() {
   for (let l = 1; l < NUM_LINES + 1; l++) {
     lines[l] = new Line();
-    lines[l].shuffle();
   }
 
   // Set manual line
@@ -48,7 +50,7 @@ function init() {
 
 function init_man() {
   m_start = createVector(width / 4, height);
-  m_vel = createVector(1, -1.5).normalize().mult(speed);
+  m_vel = createVector(1, -1.67).normalize().mult(speed);
   lines[0] = new Line(m_start, m_vel);
   //console.log(lines[0]);
 }
@@ -66,6 +68,9 @@ function keyPressed() {
   }
 
   switch (keyCode) {
+    case ENTER:
+      auto = !auto;
+      break;
     case SHIFT:
       debug = !debug;
       break;
