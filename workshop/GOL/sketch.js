@@ -85,7 +85,7 @@ function draw() {
       }
     }
     if (auto && changeCount == 0) {
-      autoDrive();
+      init();
     }
   } else {
     // first board
@@ -108,23 +108,13 @@ function draw() {
     fill(255, 0, 0);
     textSize(height / 75);
     textAlign(RIGHT, BOTTOM);
-    text("auto:" + auto + "    speed:" + generateInverval + "   density:" + density, width, height);
+    text("auto:" + auto + "\tinterval:" + generateInverval + "\tdensity:" + density, width, height);
     // text("speed:" + generateInverval, w, height + h);
     // text("   density:" + density, w, height + h);
     // text("auto:" + auto,  w, height + h);
     // text("speed:" + generateInverval, w, height + h);
     // text("density:" + density, w, height + h);
   }
-}
-
-function autoDrive() {
-  r = random(100);
-  for (i = 0; i < weights.length; i++) {
-    if (r > weights[i] && r < weights[i + 1]) {
-      density = densities[i];
-    }
-  }
-  init();
 }
 
 // Fill board randomly
@@ -186,20 +176,10 @@ function keyPressed() {
     density = densities[2];
   } else if (key == "4") {
     density = densities[3];
-  } else if (keyCode == UP_ARROW) {
-    generateInverval += 50;
-  } else if (keyCode == DOWN_ARROW) {
-    generateInverval -= 50;
-  } else if (keyCode == LEFT_ARROW) {
-    if (di > 0) {
-      di--;
-    }
-    density = densities[di];
   } else if (keyCode == RIGHT_ARROW) {
-    if (di < densities.length - 1) {
-      di++;
-    }
-    density = densities[di];
+    generateInverval += 30;
+  } else if (keyCode == LEFT_ARROW) {
+    generateInverval -= 30;
   }
 
   switch (keyCode) {
@@ -214,12 +194,9 @@ function keyPressed() {
       break;
   }
 
-  // Turn off auto if trying to do anything else
-  if(keyCode != ENTER) auto = false;
-
-  generateInverval = constrain(generateInverval, 60, 900);
-  // density = constrain(density, 0, 1);
+  // Half a second to 15 seconds
+  generateInverval = constrain(generateInverval, 30, 900);
 
   console.log("current generation interval: " + generateInverval);
-  console.log("current speed: " + density);
+  console.log("current density: " + density);
 }
