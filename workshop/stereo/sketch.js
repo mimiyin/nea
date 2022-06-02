@@ -6,7 +6,7 @@ const SLIDER_XR = SLIDER_XL + SLIDER_W;
 const SLIDER_Y = 100;
 const INPUT_M = 200;
 let panner;
-let ths = [0.1, 0.5, 1];
+let ths = [0.05, 0.25, 1];
 let thumbs = [];
 let paces = ["Fast", "Medium", "Slow"];
 let pace;
@@ -18,7 +18,7 @@ let click;
 let tempos = [
   [100, 1000],
   [1000, 5000],
-  [5000, 20000]
+  [1000, 20000]
 ];
 let inputs = [];
 
@@ -55,11 +55,11 @@ function init() {
     let high = createInput(tempo[1]);
     low.position(x, 175);
     high.position(x, 200);
-    low.input(function() {
-      tempos[t][0] = this.value;
+    low.input(function(){
+      tempos[t][0] = parseInt(this.value());
     });
     high.input(function() {
-      tempos[t][1] = this.value;
+      tempos[t][1] = parseInt(this.value());
     });
     inputs.push([low, high]);
   }
@@ -90,7 +90,12 @@ function draw() {
       side = random(1) < panner.value() ? -1 : 1;
       click.pan(side);
       click.play();
-
+      let x = side < 0 ? 0 : width/2;
+      push();
+      fill(side < 0 ? 'blue' : 'green');
+      rectMode(CORNER);
+      rect(x, 0, width/2, height);
+      pop();
       // Pick a new threshold
       let r = random(1);
       delay = undefined;

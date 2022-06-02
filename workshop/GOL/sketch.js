@@ -19,6 +19,7 @@ let density = densities[di];
 let num = 5;
 let whiteSquareCount;
 let debug = false;
+let pace = 1;
 
 function setup() {
   tWeight = 0;
@@ -56,6 +57,7 @@ function draw() {
   if (frameCount % generateInverval == 0) {
     fadeIn = 0;
     fadeOut = 255;
+    pace = random(10, 600)/generateInverval;
     pboard = board;
     generate();
   }
@@ -101,8 +103,8 @@ function draw() {
       }
     }
   }
-  fadeIn += 1 * (600 / generateInverval);
-  fadeOut -= 1 * (600 / generateInverval);
+  fadeIn += pace;
+  fadeOut -= pace;
   pop();
   if (debug) {
     fill(255, 0, 0);
