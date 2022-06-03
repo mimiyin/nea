@@ -10,7 +10,7 @@ let w, h, columns, rows, board, pboard, next;
 let auto = true;
 let fadeIn = 0;
 let fadeOut = 255;
-let generateInverval = 300;
+let generateInterval = 300;
 let seedWeights = [0, 10, 20, 50, 20]; // DENSITY WEIGHT, IGNORE FIRST '0'
 let weights = [];
 let densities = [0.05, 0.1, 0.5, 0.75]; // DENSITY PRESET
@@ -20,6 +20,7 @@ let num = 5;
 let whiteSquareCount;
 let debug = false;
 let pace = 1;
+let go = true;
 
 function setup() {
   tWeight = 0;
@@ -54,10 +55,11 @@ function draw() {
   push();
   translate(-w, -h);
 
-  if (frameCount % generateInverval == 0) {
+  if (frameCount % generateInterval == 0) {
     fadeIn = 0;
     fadeOut = 255;
-    pace = random(10, 600)/generateInverval;
+    pace = 600 / generateInterval;
+    //pace = random(300, 600)/generateInterval;
     pboard = board;
     generate();
   }
@@ -110,11 +112,11 @@ function draw() {
     fill(255, 0, 0);
     textSize(height / 75);
     textAlign(RIGHT, BOTTOM);
-    text("auto:" + auto + "\tinterval:" + generateInverval + "\tdensity:" + density, width, height);
-    // text("speed:" + generateInverval, w, height + h);
+    text("auto:" + auto + "\tinterval:" + generateInterval + "\tdensity:" + density, width, height);
+    // text("speed:" + generateInterval, w, height + h);
     // text("   density:" + density, w, height + h);
     // text("auto:" + auto,  w, height + h);
-    // text("speed:" + generateInverval, w, height + h);
+    // text("speed:" + generateInterval, w, height + h);
     // text("density:" + density, w, height + h);
   }
 }
@@ -172,20 +174,27 @@ function keyPressed() {
 
   if (key == "1") {
     density = densities[0];
+    generateInterval = 60;
   } else if (key == "2") {
     density = densities[1];
   } else if (key == "3") {
     density = densities[2];
   } else if (key == "4") {
     density = densities[3];
+    generateInterval = 600;
   } else if (keyCode == RIGHT_ARROW) {
-    generateInverval += 30;
+    generateInterval += 30;
   } else if (keyCode == LEFT_ARROW) {
-    generateInverval -= 30;
+    generateInterval -= 30;
   }
 
   switch (keyCode) {
     case 32:
+      go = !go;
+      if(go) loop();
+      else noLoop();
+      break;
+    case BACKSPACE:
       init();
       break;
     case SHIFT:
@@ -197,8 +206,8 @@ function keyPressed() {
   }
 
   // Half a second to 15 seconds
-  generateInverval = constrain(generateInverval, 30, 900);
+  generateInterval = constrain(generateInterval, 30, 900);
 
-  console.log("current generation interval: " + generateInverval);
+  console.log("current generation interval: " + generateInterval);
   console.log("current density: " + density);
 }

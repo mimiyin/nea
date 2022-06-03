@@ -1,4 +1,5 @@
 let r = 1;
+let rmult = 1;
 let sx, sy, ex, ey;
 let sxspeed, syspeed, exspeed, eyspeed;
 let t = {};
@@ -27,7 +28,7 @@ function draw() {
     textAlign(RIGHT, BOTTOM);
     fill('red');
     noStroke();
-    text('speed: ' + nfs(r, 0, 2) + '\tmargin: ' + floor(margin), width, height);
+    text('speed: ' + nfs(r, 0, 2) + '\trmult: ' + floor(rmult), width, height);
     pop();
   }
 }
@@ -40,10 +41,10 @@ function init(side) {
       sy = random(height);
       ex = random(-margin, 0);
       ey = random(height);
-      sxspeed = random(r, 2 * r);
-      syspeed = random(1) < 0.5 ? random(-2 * r, -r) : random(r, 2 * r);
-      exspeed = random(r, 2 * r);
-      eyspeed = random(1) < 0.5 ? random(-2 * r, -r) : random(r, 2 * r);
+      sxspeed = random(r, rmult * r);
+      syspeed = random(1) < 0.5 ? random(-rmult * r, -r) : random(r, rmult * r);
+      exspeed = random(r, rmult * r);
+      eyspeed = random(1) < 0.5 ? random(-rmult * r, -r) : random(r, rmult * r);
       break;
       // RIGHT
     case 1:
@@ -51,10 +52,10 @@ function init(side) {
       sy = random(height);
       ex = random(width, width + margin);
       ey = random(height);
-      sxspeed = random(-2 * r, -r);
-      syspeed = random(1) < 0.5 ? random(-2 * r, -r) : random(r, 2 * r);
-      exspeed = random(-2 * r, -r);
-      eyspeed = random(1) < 0.5 ? random(-2 * r, -r) : random(r, 2 * r);
+      sxspeed = random(-rmult * r, -r);
+      syspeed = random(1) < 0.5 ? random(-rmult * r, -r) : random(r, rmult * r);
+      exspeed = random(-rmult * r, -r);
+      eyspeed = random(1) < 0.5 ? random(-rmult * r, -r) : random(r, rmult * r);
       break;
       // TOP
     case 2:
@@ -62,10 +63,10 @@ function init(side) {
       sy = random(-margin, 0);
       ex = random(width);
       ey = random(-margin, 0);
-      sxspeed = random(1) < 0.5 ? random(-2 * r, -r) : random(r, 2 * r);
-      syspeed = random(r, 2 * r);
-      exspeed = random(1) < 0.5 ? random(-2 * r, -r) : random(r, 2 * r);
-      eyspeed = random(r, 2 * r);
+      sxspeed = random(1) < 0.5 ? random(-rmult * r, -r) : random(r, rmult * r);
+      syspeed = random(r, rmult * r);
+      exspeed = random(1) < 0.5 ? random(-rmult * r, -r) : random(r, rmult * r);
+      eyspeed = random(r, rmult * r);
       break;
       // BOTTOM
     case 3:
@@ -73,12 +74,12 @@ function init(side) {
       sy = random(height, height + margin);
       ex = random(width);
       ey = random(height, height + margin);
-      sxspeed = random(1) < 0.5 ? random(-2 * r, -r) : random(r, 2 * r);
-      syspeed = random(-2 * r, -r);
-      exspeed = random(1) < 0.5 ? random(-2 * r, -r) : random(r, 2 * r);
-      eyspeed = random(-2 * r, -r);
+      sxspeed = random(1) < 0.5 ? random(-rmult * r, -r) : random(r, rmult * r);
+      syspeed = random(-rmult * r, -r);
+      exspeed = random(1) < 0.5 ? random(-rmult * r, -r) : random(r, rmult * r);
+      eyspeed = random(-rmult * r, -r);
   }
-  console.log("POINTS: ", sx, sy, ex, ey);
+  console.log("SPEEDS: ", floor(sxspeed), floor(syspeed), floor(exspeed), floor(eyspeed));
 }
 
 // function mousePressed() {
@@ -120,16 +121,16 @@ function keyPressed() {
       init(floor(random(4)));
       break;
     case RIGHT_ARROW:
-      margin += 100;
+      rmult++;
       break;
     case LEFT_ARROW:
-      margin -= 100;
+      rmult--;
       break;
     case UP_ARROW:
-      r -= 0.1;
+      r --;
       break;
     case DOWN_ARROW:
-      r += 0.1;
+      r ++;
       break;
     case SHIFT:
       debug = !debug;
