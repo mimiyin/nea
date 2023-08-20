@@ -10,17 +10,19 @@ let w, h, columns, rows, board, pboard, next;
 let auto = true;
 let fadeIn = 0;
 let fadeOut = 255;
-let generateInterval = 300;
+let generateInterval = 100;
 let seedWeights = [0, 10, 20, 50, 20]; // DENSITY WEIGHT, IGNORE FIRST '0'
 let weights = [];
-let densities = [0.05, 0.1, 0.5, 0.75]; // DENSITY PRESET
-let di = 2; // CHANGE STARTING DENSITY HERE
+let densities = [-1, 0.01, 0.05, 0.1, 0.5, 0.75]; // DENSITY PRESET
+let di = 1; // CHANGE STARTING DENSITY HERE
 let density = densities[di];
 let num = 5;
 let whiteSquareCount;
 let debug = false;
 let pace = 1;
 let go = true;
+
+console.log("DENSITY: ", density, "INTERVAL: ", generateInterval);
 
 function setup() {
   tWeight = 0;
@@ -58,7 +60,7 @@ function draw() {
   if (frameCount % generateInterval == 0) {
     fadeIn = 0;
     fadeOut = 255;
-    pace = 600 / generateInterval;
+    pace = 512 / generateInterval;
     //pace = random(300, 600)/generateInterval;
     pboard = board;
     generate();
@@ -172,42 +174,39 @@ function generate() {
 function keyPressed() {
   // if user presses 1, decrease generate interval by 50 until it reaches 300, if user presses 2, increase generate interval by 50 until it reaches 900
 
-  if (key == "1") {
-    density = densities[0];
-    generateInterval = 60;
-  } else if (key == "2") {
-    density = densities[1];
-  } else if (key == "3") {
-    density = densities[2];
-  } else if (key == "4") {
-    density = densities[3];
-    generateInterval = 600;
-  } else if (keyCode == RIGHT_ARROW) {
-    generateInterval += 30;
-  } else if (keyCode == LEFT_ARROW) {
-    generateInterval -= 30;
-  }
+  if(key == '1' || key == '2' || key == '3' || key == '4' || key == '5') density = densities[key];
 
   switch (keyCode) {
-    case 32:
-      go = !go;
-      if(go) loop();
-      else noLoop();
+    case RIGHT_ARROW:
+      generateInterval += 100;
       break;
-    case BACKSPACE:
-      init();
-      break;
-    case SHIFT:
-      debug = !debug;
-      break;
-    case ENTER:
-      auto = !auto;
+    case LEFT_ARROW:
+      generateInterval -= 100;
       break;
   }
 
-  // Half a second to 15 seconds
-  generateInterval = constrain(generateInterval, 30, 900);
 
-  console.log("current generation interval: " + generateInterval);
-  console.log("current density: " + density);
+switch (keyCode) {
+  case 32:
+    go = !go;
+    if (go) loop();
+    else noLoop();
+    console.log(go ? "Go" : "Pause");
+    break;
+  case BACKSPACE:
+    init();
+    break;
+  case SHIFT:
+    debug = !debug;
+    break;
+  case ENTER:
+    auto = !auto;
+    break;
+}
+
+// Half a second to 15 seconds
+generateInterval = constrain(generateInterval, 30, 900);
+
+console.log("current generation interval: " + generateInterval);
+console.log("current density: " + density);
 }

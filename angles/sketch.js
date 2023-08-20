@@ -1,4 +1,4 @@
-// Position of 2 people
+ // Position of 2 people
 let x1, y1, x2, y2;
 
 // Flip of divison?
@@ -35,6 +35,14 @@ let amax = 255;
 let aspeed = 1;
 let adir = 1;
 
+// Auto-pilot
+let auto1 = false;
+let auto2 = false;
+let xspeed1 = 1;
+let xspeed2 = 1;
+let yspeed1 = 1;
+let yspeed2 = 1;
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   // Start off on a diagonal
@@ -50,6 +58,7 @@ function setup() {
   aspeed = amax / rr;
 
   noStroke();
+  noCursor();
 }
 
 
@@ -67,7 +76,7 @@ function draw() {
   if (mids.length > ts) mids.shift();
 
 
-  // Calculate the relative position of 2 points    
+  // Calculate the relative position of 2 points
   let dXY = {
     x: x2 - x1,
     y: y2 - y1
@@ -80,14 +89,14 @@ function draw() {
 
   // Fade in
   a += aspeed * adir;
-  
+
   // If we're all black or all white
   if (a < 0 || a > amax * 2) {
     // Flip color of division
-		// When you go to white or black
-      flip = ! flip;
-      a = 0;
-    
+    // When you go to white or black
+    flip = !flip;
+    a = 0;
+
     // Calculate average midpoint over time
     amid = {
       x: 0,
@@ -118,7 +127,7 @@ function draw() {
 
   // Calculate the average angle
   let angle = atan(adxy.y / adxy.x);
-	
+
   // Draw the background
   background(flip ? 255 : 0);
 
@@ -142,12 +151,38 @@ function draw() {
   ellipse(x1, y1, 10, 10);
   ellipse(x2, y2, 10, 10);
   // Draw the midpoint
-  fill('blue');
-  ellipse(mx, my, 20, 20);
+  // fill('blue');
+  // ellipse(mx, my, 20, 20);
+
+  if (auto1) {
+    x1+=xspeed1;
+    y1+=yspeed1;
+  }
+
+  if (auto2) {
+    x2+=xspeed2;
+    y2+=yspeed2;
+  }
+
 
 }
 
-// Move the closest point with the mouse 
+function keyPressed() {
+  switch (key) {
+    case '1':
+      auto1 = !auto1;
+      xspeed1 = random(-2, 2);
+      yspeed1 = random(-2, 2);
+      break;
+    case '2':
+      auto2 = !auto2;
+      xspeed2 = random(-2, 2);
+      yspeed2 = random(-2, 2);
+      break;
+  }
+}
+
+// Move the closest point with the mouse
 // mouse is being dragged
 function mouseDragged() {
   let d1 = dist(mouseX, mouseY, x1, y1);
